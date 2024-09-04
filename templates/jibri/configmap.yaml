@@ -6,6 +6,12 @@ metadata:
   labels:
     {{- include "jitsi-meet.jibri.labels" . | nindent 4 }}
 data:
+  finalize.sh: |
+    {{- if .Values.jibri.custom.finalizing._finalize_sh }}
+      {{- .Values.jibri.custom.finalizing._finalize_sh | nindent 4 }}
+    {{- else }}
+    # No finalizing script
+    {{ end }}
   XMPP_SERVER: '{{ include "jitsi-meet.xmpp.server" . }}'
   JIBRI_BREWERY_MUC: '{{ .Values.jibri.breweryMuc }}'
   JIBRI_RECORDING_DIR: '{{ .Values.jibri.recordingDir | default "/data/recordings" }}'

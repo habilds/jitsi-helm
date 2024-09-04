@@ -88,11 +88,12 @@ web:
   ingress:
     enabled: false
     # ingressClassName: "nginx-ingress-0"
-    annotations: {}
+    annotations:
+      {}
       # kubernetes.io/tls-acme: "true"
     hosts:
-    - host: jitsi.local
-      paths: ['/']
+      - host: jitsi.local
+        paths: ["/"]
     tls: []
     #  - secretName: jitsi-web-certificate
     #    hosts:
@@ -123,10 +124,12 @@ web:
 
   podLabels: {}
   podAnnotations: {}
-  podSecurityContext: {}
+  podSecurityContext:
+    {}
     # fsGroup: 2000
 
-  securityContext: {}
+  securityContext:
+    {}
     # capabilities:
     #   drop:
     #   - ALL
@@ -134,7 +137,8 @@ web:
     # runAsNonRoot: true
     # runAsUser: 1000
 
-  resources: {}
+  resources:
+    {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -215,7 +219,7 @@ jvb:
   useNodeIP: false
   ## Use a STUN server to help some users punch through some
   #  especially nasty NAT setups. Usually makes sense for P2P calls.
-  stunServers: 'meet-jit-si-turnrelay.jitsi.net:443'
+  stunServers: "meet-jit-si-turnrelay.jitsi.net:443"
   ## Try to use the hostPort feature:
   #  (might not be supported by some clouds or CNI engines)
   useHostPort: false
@@ -237,12 +241,14 @@ jvb:
     #  An example below is needed for DigitalOcean managed k8s setups
     #  with a LoadBalancer service, so that DO's external LB can perform
     #  health checks on JVB.
-    annotations: {}
+    annotations:
+      {}
       # service.beta.kubernetes.io/do-loadbalancer-healthcheck-port: "8080"
       # service.beta.kubernetes.io/do-loadbalancer-healthcheck-protocol: "tcp"
     ## Add extra ports to the service.
     #  An example below is needed for DigitalOcean managed k8s setups.
-    extraPorts: []
+    extraPorts:
+      []
       # - name: http-healthcheck
       #   port: 8080
       #   protocol: TCP
@@ -299,7 +305,6 @@ jvb:
 octo:
   enabled: false
 
-
 jigasi:
   ## Enabling Jigasi will allow regular SIP clients to join Jitsi meetings
   ## or nearly real-time transcription.
@@ -338,7 +343,6 @@ jigasi:
   tolerations: []
   affinity: {}
   extraEnvs: {}
-
 
 jibri:
   ## Enabling Jibri will allow users to record
@@ -464,6 +468,8 @@ jibri:
       _jibri_conf: ""
       _logging_properties: ""
       _xorg_video_dummy_conf: ""
+    finalizing:
+      _finalize_sh: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -488,16 +494,16 @@ prosody:
   useExternalProsody: false
   server:
   extraEnvFrom:
-  - secretRef:
-      name: '{{ include "prosody.fullname" . }}-jibri'
-  - secretRef:
-      name: '{{ include "prosody.fullname" . }}-jicofo'
-  - secretRef:
-      name: '{{ include "prosody.fullname" . }}-jigasi'
-  - secretRef:
-      name: '{{ include "prosody.fullname" . }}-jvb'
-  - configMapRef:
-      name: '{{ include "prosody.fullname" . }}-common'
+    - secretRef:
+        name: '{{ include "prosody.fullname" . }}-jibri'
+    - secretRef:
+        name: '{{ include "prosody.fullname" . }}-jicofo'
+    - secretRef:
+        name: '{{ include "prosody.fullname" . }}-jigasi'
+    - secretRef:
+        name: '{{ include "prosody.fullname" . }}-jvb'
+    - configMapRef:
+        name: '{{ include "prosody.fullname" . }}-common'
   image:
     repository: jitsi/prosody
     tag: stable-9646
@@ -517,12 +523,14 @@ prosody:
       _saslauthd_conf: ""
       _jitsi_meet_cfg_lua: ""
 
-  extraVolumes: []
+  extraVolumes:
+    []
     # - name: prosody-modules
     #   configMap:
     #     name: prosody-modules
 
-  extraVolumeMounts: []
+  extraVolumeMounts:
+    []
     # - name: prosody-modules
     #   subPath: mod_measure_client_presence.lua
     #   mountPath: /prosody-plugins-custom/mod_measure_client_presence.lua

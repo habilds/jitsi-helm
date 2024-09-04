@@ -80,6 +80,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        {{- if .Values.jibri.custom.finalizing._finalize_sh }}
+        - name: config
+          mountPath: /config/finalize.sh
+          subPath: finalize.sh
+        {{- end }}
         {{- if .Values.jibri.custom.contInit._10_config }}
         - name: custom-cont-inits
           mountPath: /etc/cont-init.d/10-config
@@ -114,7 +119,15 @@ spec:
 
       volumes:
       - name: config
+        {{- if .Values.jibri.custom.finalizing._finalize_sh }}
+        configMap:
+          name: {{ include "jitsi-meet.jibri.fullname" . }}
+          items:
+            - key: finalize.sh
+              path: finalize.sh
+        {{- else }}
         emptyDir: {}
+        {{- end }}
       - name: custom-cont-inits
         configMap:
           defaultMode: 493
